@@ -27,7 +27,7 @@ SafeSite is an integrated safety solution for construction sites that combines a
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/safesite.git
+    git clone https://github.com/NoealRajeev/SiteShield.git
     cd safesite
     ```
 
