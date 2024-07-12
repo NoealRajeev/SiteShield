@@ -12,12 +12,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      # Checks out the repository's code for the workflow job
+
+    - name: Set up Git identity
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+      # Configures Git identity for commits made by the action
 
     - name: Merge main_vs into main
       run: |
-        git fetch origin
-        git checkout main
+        git fetch origin  # Fetches the latest changes from the remote repository
+        git checkout main  # Checks out the 'main' branch
         git merge --no-ff main_vs --allow-unrelated-histories -m "Merge branch 'main_vs' into main"
-        git push origin main
+        # Merges 'main_vs' into 'main', allowing unrelated histories
+        git push origin main  # Pushes the updated 'main' branch to the remote repository
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Token used for authentication to push changes to the repository
