@@ -1,0 +1,38 @@
+name: Auto Merge
+
+on:
+  push:
+    branches:
+      - main_vs  # Replace with the name of your branch
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      # Checks out the repository's code for the workflow job
+
+    - name: Set up Git identity
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+      # Configures Git identity for commits made by the action
+
+    - name: Merge main_vs into main
+      run: |
+        git fetch origin  # Fetches the latest changes from the remote repository
+        git checkout main  # Checks out the 'main' branch
+        git merge --no-ff main_vs --allow-unrelated-histories -m "Merge branch 'main_vs' into main" || echo "Merge conflict detected"
+        # Tries to merge 'main_vs' into 'main', allowing unrelated histories, and prints a message if there are conflicts
+        git status  # Checks the status of the repository to see if there are conflicts
+        if git diff --check | grep -q "conflict"; then
+          echo "Merge conflict detected. Resolving conflicts automatically."
+          git add .  # Stages the resolved changes
+          git commit -m "Auto-resolved merge conflicts"
+        fi
+        git push origin main  # Pushes the updated 'main' branch to the remote repository
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Token used for authentication to push changes to the repository
