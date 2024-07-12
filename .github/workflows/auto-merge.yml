@@ -13,11 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Merge to main branch
+    - name: Merge main_vs into main
       run: |
         git fetch origin
         git checkout main
-        git merge --no-ff main_vs -m "Merge branch 'main_vs' into main"
+        git merge --no-ff main_vs --allow-unrelated-histories -m "Merge branch 'main_vs' into main"
         git push origin main
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
