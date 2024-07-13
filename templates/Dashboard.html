@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends "sidebar.html" %}
+
+    {% block content %}
+    <div class="text">Welcome to the Dashboard.......</div>
+    <div>
+        <h2>Live Video Stream</h2>
+        <img src="http://{{ pi_ip }}:5001/video_feed" alt="Live Stream" width="640" height="480">
+    </div>
+    {% endblock %}
+</body>
+</html>

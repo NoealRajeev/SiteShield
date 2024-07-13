@@ -15,6 +15,8 @@ db_config = {
     'database': 'projects'
 }
 
+pi_address = '192.168.137.198'
+
 def get_laptop_ip():
     hostname = socket.gethostname()
     ip_address = socket.gethostbyname(hostname)
@@ -25,7 +27,7 @@ def check_pi_server():
     try:
         ip_address = get_laptop_ip()
         print(f"Sending IP to server: {ip_address}")  # Debug print
-        response = requests.post('http://192.168.137.198:5001/set_ip', json={'ip': ip_address})
+        response = requests.post('http://{pi_address}:5001/set_ip', json={'ip': ip_address})
         print(f"Server response status code: {response.status_code}")  # Debug print
         if response.status_code == 200:
             response_data = response.json()
@@ -147,8 +149,8 @@ def test():
 
 # WEB interface methods
 @app.route('/')
-def index():
-    return render_template('index.html', rfid_data=123)
+def home():
+    return render_template('Dashboard.html', pi_ip=pi_address)
 
 if __name__ == '__main__':
     create_tables()  # Ensure tables are created before checking PI server
