@@ -150,12 +150,50 @@ def test():
 # WEB interface methods
 @app.route('/')
 def home():
-    return render_template('Dashboard.html', pi_ip=pi_address)
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        
+        # Query to fetch attendance details and join with user details
+        query = """
+        SELECT 
+            attendance.id,
+            attendance.card_id,
+            attendance.name,
+            attendance.EntryTime,
+            attendance.ExitTime,
+            user.designation
+        FROM attendance
+        LEFT JOIN user ON attendance.card_id = user.card_id
+        """
+        cursor.execute(query)
+        attendance_records = cursor.fetchall()
+        
+        # Format EntryTime and ExitTime
+        for record in attendance_records:
+            record['Date'] = record['EntryTime'].strftime('%Y-%m-%d')  # Extract the Date part
+            record['EntryTime'] = record['EntryTime'].strftime('%H:%M:%S')  # Format EntryTime
+            record['ExitTime'] = record['ExitTime'].strftime('%H:%M:%S') if record['ExitTime'] else '--'  # Format ExitTime
+
+        cursor.close()
+        conn.close()
+
+        return render_template('Dashboard.html', attendance_records=attendance_records, pi_ip=pi_address)
+
+    except mysql.connector.Error as err:
+        print(f"Error fetching attendance data: {err}")
+        return jsonify({"error": str(err)}), 500
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html', pi_ip=pi_address)
 
 if __name__ == '__main__':
     create_tables()  # Ensure tables are created before checking PI server
     print("Checking PI server...")  # Debug print
     if check_pi_server():
+    # if True :
         print("Server response OK, starting Flask app.")
         app.run(host='0.0.0.0', port=5001)
     else:
