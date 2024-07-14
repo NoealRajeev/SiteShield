@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles/Dashboard.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <title>Dashboard</title>
+</head>
+<body>
+    {% extends "sidebar.html" %}
+
+    {% block content %}
+    <div class="container">
+        <section class="main">
+          <div class="main-top">
+            <h1>Attendance</h1>
+            <i class="fas fa-user-cog"></i>
+          </div>
+          <div class="users">
+            <!-- Video Feed -->
+            <div class="video-feed">
+                <video controls width="800" height="480" playsinline style="pointer-events: none;" autoplay="autoplay" muted loop >
+                    <source src="http://{{ pi_ip }}:5001/video_feed" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <!-- Employee Card -->
+            <div class="card">
+                <div class="profile-pic">
+                    <img src="{{ url_for('static', filename='profile.jpg') }} " alt="Profile Pic">
+                </div>
+                <div class="details">
+                    <h1>Employee Details</h1>
+                    <h4>Noeal Rajeev</h4>
+                    <p>12345</p>
+                    <p>Designation: UI Designer</p>
+                    <p>Gender: Male</p>
+                </div>
+            </div>
+        </div>
+        <section class="attendance">
+            <div class="attendance-list">
+                <h1>Attendance List</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Designation</th>
+                            <th>Date</th>
+                            <th>Entry Time</th>
+                            <th>Exit Time</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in attendance_records %}
+                            <tr class="{{ 'active' if loop.index0 % 2 == 0 else '' }}">
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.name }}</td>
+                                <td>{{ record.designation or 'Unknown' }}</td>
+                                <td>{{ record.Date }}</td>
+                                <td>{{ record.EntryTime }}</td>
+                                <td>{{ record.ExitTime }}</td>
+                                <td><button>View</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</div>
+    {% endblock %}
+</body>
+</html>

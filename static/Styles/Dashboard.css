@@ -1,0 +1,178 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+*{
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+:root{
+    /* ===== Colors ===== */
+    --body-color: #E4E9F7;
+    --sidebar-color: #FFF;
+    --primary-color: #695CFE;
+    --primary-color-light: #F6F5FF;
+    --toggle-color: #DDD;
+    --text-color: #707070;
+
+    /* ====== Transition ====== */
+    --tran-03: all 0.2s ease;
+    --tran-03: all 0.3s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.3s ease;
+}
+
+body{
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+body.dark{
+    --body-color: #18191a;
+    --sidebar-color: #242526;
+    --primary-color: #3a3b3c;
+    --primary-color-light: #3a3b3c;
+    --toggle-color: #fff;
+    --text-color: #ccc;
+}
+/* MAin Section */
+h1 {
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+.main{
+  position: relative;
+  padding: 20px;
+  width: 100%;
+}
+.main-top{
+  display: flex;
+  width: 100%;
+}
+.main-top i{
+  position: absolute;
+  right: 0;
+  margin: 10px 30px;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.main .users{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.users .card{
+  display: flex;
+  flex-direction: row;  /* Arrange items vertically */
+  align-items: center;  /* Center align items horizontally */
+  border: 1px solid var(--primary-color);
+  width: 50%;
+  margin: 10px;
+  background:var(--sidebar-color);
+  text-align: center;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+.profile-pic {
+  flex: 0 0 360px;
+  max-width: 360px;
+  height: 360px;  /* Fixed height for the profile picture */
+  overflow: hidden;  /* Hide overflow */
+  margin-right: 20px;
+}
+
+.profile-pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Crop the bottom part of the image */
+  object-position: top;  /* Focus on the top part of the image */
+  border-radius: 8px;
+}
+.details {
+  text-align: center;  /* Center align text */
+  height: 100%;
+  width: 100%;
+}
+
+.details h1 {
+  font-size: 28px;
+  margin-bottom: 42px;
+  
+}
+
+.details h4 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.details p {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+/*Attendance List serction  */
+.attendance{
+  margin-top: 20px;
+  text-transform: capitalize;
+}
+.attendance-list{
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: var(--sidebar-color);
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+.table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+  min-width: 100%;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+}
+table thead tr{
+    color: var(--text-color);
+  background: var(--primary-color);
+  text-align: left;
+  font-weight: bold;
+}
+.table th,
+.table td{
+  padding: 12px 15px;
+}
+.table th{
+    color: var(--toggle-color);
+}
+.table tbody tr{
+    color: var(--text-color);
+  border-bottom: 1px solid #ddd;
+}
+.table tbody tr:nth-of-type(even){
+  background: var(--primary-color-light);
+  color: var(--text-color);
+}
+.table tbody tr.active{
+  font-weight: bold;
+  color: var(--text-color);
+}
+.table tbody tr:last-of-type{
+  border-bottom: 2px solid var(--primary-color);
+}
+.table button{
+  padding: 6px 20px;
+  border-radius: 10px;
+  color: var(--text-color);
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--primary-color);
+}
+.table button:hover{
+    background: var(--primary-color);
+  color: #fff;
+  transition: 0.5rem;
+}
