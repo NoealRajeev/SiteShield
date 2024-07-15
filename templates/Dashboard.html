@@ -13,65 +13,120 @@
     {% block content %}
     <div class="container">
         <section class="main">
-          <div class="main-top">
-            <h1>Attendance</h1>
-            <i class="fas fa-user-cog"></i>
-          </div>
-          <div class="users">
-            <!-- Video Feed -->
-            <div class="video-feed">
-                <video controls width="800" height="480" playsinline style="pointer-events: none;" autoplay="autoplay" muted loop >
-                    <source src="http://{{ pi_ip }}:5001/video_feed" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+            <div class="main-top">
+                <h1>Attendance</h1>
+                <i class="fas fa-user-cog"></i>
             </div>
-            <!-- Employee Card -->
-            <div class="card">
-                <div class="profile-pic">
-                    <img src="{{ url_for('static', filename='profile.jpg') }} " alt="Profile Pic">
+            <div class="users">
+                <!-- Video Feed -->
+                <div class="video-feed">
+                    <video controls width="800" height="480" playsinline style="pointer-events: none;" autoplay="autoplay" muted loop >
+                        <source src="{{ url_for('static', filename='sample.mp4') }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
-                <div class="details">
-                    <h1>Employee Details</h1>
-                    <h4>Noeal Rajeev</h4>
-                    <p>12345</p>
-                    <p>Designation: UI Designer</p>
-                    <p>Gender: Male</p>
+                <!-- Employee Card -->
+                <div class="card">
+                    <div class="profile-pic">
+                        <img src="{{ url_for('static', filename='profile.jpg') }} " alt="Profile Pic">
+                    </div>
+                    <div class="details" id="user-details">
+                        <h1>Employee Details</h1>
+                        <h4 id="user-name">Noeal Rajeev</h4>
+                        <p id="user-id">12345</p>
+                        <p id="user-designation">Designation: UI Designer</p>
+                        <p id="user-gender">Gender: Male</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <section class="attendance">
-            <div class="attendance-list">
-                <h1>Attendance List</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Designation</th>
-                            <th>Date</th>
-                            <th>Entry Time</th>
-                            <th>Exit Time</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for record in attendance_records %}
-                            <tr class="{{ 'active' if loop.index0 % 2 == 0 else '' }}">
-                                <td>{{ record.id }}</td>
-                                <td>{{ record.name }}</td>
-                                <td>{{ record.designation or 'Unknown' }}</td>
-                                <td>{{ record.Date }}</td>
-                                <td>{{ record.EntryTime }}</td>
-                                <td>{{ record.ExitTime }}</td>
-                                <td><button>View</button></td>
+            <section class="attendance">
+                <div class="attendance-list">
+                    <h1>Attendance List</h1>
+                    <table class="table" id="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Designation</th>
+                                <th>Date</th>
+                                <th>Entry Time</th>
+                                <th>Exit Time</th>
+                                <th>Details</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance_records %}
+                                <tr class="{{ 'active' if loop.index0 % 2 == 0 else '' }}">
+                                    <td>{{ record.id }}</td>
+                                    <td>{{ record.name }}</td>
+                                    <td>{{ record.designation or 'Unknown' }}</td>
+                                    <td>{{ record.Date }}</td>
+                                    <td>{{ record.EntryTime }}</td>
+                                    <td>{{ record.ExitTime }}</td>
+                                    <td><button>View</button></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </section>
-    </section>
-</div>
+    </div>
+    <script>
+        function updateDashboard(data) {
+            // Update user details
+            document.getElementById('user-name').innerText = data.user.name;
+            document.getElementById('user-id').innerText = data.user.card_id;
+            document.getElementById('user-designation').innerText = "Designation: " + data.user.designation;
+
+            // Update attendance list
+            const attendanceTableBody = document.querySelector('#attendance-table tbody');
+            attendanceTableBody.innerHTML = ''; // Clear existing rows
+
+            data.attendance_records.forEach((record, index) => {
+                const row = document.createElement('tr');
+                if (index % 2 === 0) {
+                    row.classList.add('active');
+                }
+                row.innerHTML = `
+                    <td>${record.id}</td>
+                    <td>${record.name}</td>
+                    <td>${record.designation || 'Unknown'}</td>
+                    <td>${record.Date}</td>
+                    <td>${record.EntryTime}</td>
+                    <td>${record.ExitTime}</td>
+                    <td><button>View</button></td>
+                `;
+                attendanceTableBody.appendChild(row);
+            });
+        }
+
+        // // Function to simulate RFID detection
+        // function simulateRFIDDetection() {
+        //     fetch('/rfid', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             id: '12345',
+        //             timestamp: new Date().toISOString()
+        //         }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (!data.error) {
+        //             updateDashboard(data);
+        //         } else {
+        //             console.error(data.error);
+        //         }
+        //     })
+        //     .catch(error => console.error('Error:', error));
+        // }
+
+        // // Simulate RFID detection every 10 seconds for testing
+        // setInterval(simulateRFIDDetection, 10000);
+    </script>
     {% endblock %}
 </body>
 </html>
