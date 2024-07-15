@@ -15,7 +15,11 @@ db_config = {
     'database': 'projects'
 }
 
+<<<<<<< HEAD
 pi_address = '192.168.137.198'
+=======
+pi_address = "192.168.137.198"
+>>>>>>> main_vs
 
 def get_laptop_ip():
     hostname = socket.gethostname()
@@ -27,7 +31,12 @@ def check_pi_server():
     try:
         ip_address = get_laptop_ip()
         print(f"Sending IP to server: {ip_address}")  # Debug print
+<<<<<<< HEAD
         response = requests.post('http://{pi_address}:5001/set_ip', json={'ip': ip_address})
+=======
+        url = "http://" + pi_address + ":5001/set_ip"
+        response = requests.post(url, json={'ip': ip_address})
+>>>>>>> main_vs
         print(f"Server response status code: {response.status_code}")  # Debug print
         if response.status_code == 200:
             response_data = response.json()
@@ -100,11 +109,19 @@ def receive_rfid():
         cursor = conn.cursor(dictionary=True)
         
         # Check user table for card owner details
+<<<<<<< HEAD
         cursor.execute("SELECT name FROM user WHERE card_id = %s", (card_id,))
+=======
+        cursor.execute("SELECT name, designation FROM user WHERE card_id = %s", (card_id,))
+>>>>>>> main_vs
         user = cursor.fetchone()
 
         if user:
             name = user['name']
+<<<<<<< HEAD
+=======
+            designation = user['designation']
+>>>>>>> main_vs
             # Check if there's an existing record in attendance table with EntryTime present and ExitTime is NULL
             cursor.execute("""
                 SELECT id FROM attendance
@@ -130,18 +147,62 @@ def receive_rfid():
                 response_message = {"message": "Data received successfully"}
 
             conn.commit()
+<<<<<<< HEAD
+=======
+
+            # Fetch the updated attendance list
+            cursor.execute("""
+            SELECT 
+                attendance.id,
+                attendance.card_id,
+                attendance.name,
+                attendance.EntryTime,
+                attendance.ExitTime,
+                user.designation
+            FROM attendance
+            LEFT JOIN user ON attendance.card_id = user.card_id
+            """)
+            attendance_records = cursor.fetchall()
+            
+            # Format EntryTime and ExitTime
+            for record in attendance_records:
+                record['Date'] = record['EntryTime'].strftime('%Y-%m-%d')  # Extract the Date part
+                record['EntryTime'] = record['EntryTime'].strftime('%H:%M:%S')  # Format EntryTime
+                record['ExitTime'] = record['ExitTime'].strftime('%H:%M:%S') if record['ExitTime'] else '--'  # Format ExitTime
+
+            response_data = {
+                "user": {
+                    "name": name,
+                    "designation": designation,
+                    "card_id": card_id
+                },
+                "attendance_records": attendance_records
+            }
+            cursor.close()
+            conn.close()
+            return jsonify(response_data), 200
+
+>>>>>>> main_vs
         else:
             print(f"Card ID: {card_id} not found in user table")
             response_message = {"error": "Card ID not found in user table"}
 
         cursor.close()
         conn.close()
+<<<<<<< HEAD
         return jsonify(response_message), 200 if user else 404
+=======
+        return jsonify(response_message), 404
+>>>>>>> main_vs
     
     except mysql.connector.Error as err:
         print(f"Error inserting RFID data: {err}")
         return jsonify({"error": str(err)}), 500
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> main_vs
 @app.route('/test', methods=['POST'])
 def test():
     data = request.get_json()
