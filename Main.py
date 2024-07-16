@@ -16,7 +16,11 @@ db_config = {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 pi_address = '192.168.137.198'
+=======
+pi_address = "192.168.137.198"
+>>>>>>> main_vs
 =======
 pi_address = "192.168.137.198"
 >>>>>>> main_vs
@@ -32,7 +36,12 @@ def check_pi_server():
         ip_address = get_laptop_ip()
         print(f"Sending IP to server: {ip_address}")  # Debug print
 <<<<<<< HEAD
+<<<<<<< HEAD
         response = requests.post('http://{pi_address}:5001/set_ip', json={'ip': ip_address})
+=======
+        url = "http://" + pi_address + ":5001/set_ip"
+        response = requests.post(url, json={'ip': ip_address})
+>>>>>>> main_vs
 =======
         url = "http://" + pi_address + ":5001/set_ip"
         response = requests.post(url, json={'ip': ip_address})
@@ -110,7 +119,11 @@ def receive_rfid():
         
         # Check user table for card owner details
 <<<<<<< HEAD
+<<<<<<< HEAD
         cursor.execute("SELECT name FROM user WHERE card_id = %s", (card_id,))
+=======
+        cursor.execute("SELECT name, designation FROM user WHERE card_id = %s", (card_id,))
+>>>>>>> main_vs
 =======
         cursor.execute("SELECT name, designation FROM user WHERE card_id = %s", (card_id,))
 >>>>>>> main_vs
@@ -119,6 +132,10 @@ def receive_rfid():
         if user:
             name = user['name']
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+            designation = user['designation']
+>>>>>>> main_vs
 =======
             designation = user['designation']
 >>>>>>> main_vs
@@ -148,7 +165,10 @@ def receive_rfid():
 
             conn.commit()
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> main_vs
 
             # Fetch the updated attendance list
             cursor.execute("""
@@ -182,6 +202,9 @@ def receive_rfid():
             conn.close()
             return jsonify(response_data), 200
 
+<<<<<<< HEAD
+>>>>>>> main_vs
+=======
 >>>>>>> main_vs
         else:
             print(f"Card ID: {card_id} not found in user table")
@@ -190,7 +213,11 @@ def receive_rfid():
         cursor.close()
         conn.close()
 <<<<<<< HEAD
+<<<<<<< HEAD
         return jsonify(response_message), 200 if user else 404
+=======
+        return jsonify(response_message), 404
+>>>>>>> main_vs
 =======
         return jsonify(response_message), 404
 >>>>>>> main_vs
@@ -200,6 +227,10 @@ def receive_rfid():
         return jsonify({"error": str(err)}), 500
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> main_vs
 =======
 
 >>>>>>> main_vs
@@ -250,11 +281,23 @@ def home():
 def login():
     return render_template('login.html', pi_ip=pi_address)
 
+<<<<<<< HEAD
 if __name__ == '__main__':
     create_tables()  # Ensure tables are created before checking PI server
     print("Checking PI server...")  # Debug print
     if check_pi_server():
     # if True :
+=======
+@app.route('/survilence')
+def survilence():
+    return render_template('survilence.html')
+
+if __name__ == '__main__':
+    create_tables()  # Ensure tables are created before checking PI server
+    print("Checking PI server...")  # Debug print
+    # if check_pi_server():
+    if True :
+>>>>>>> main_vs
         print("Server response OK, starting Flask app.")
         app.run(host='0.0.0.0', port=5001)
     else:
