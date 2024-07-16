@@ -225,11 +225,15 @@ def home():
 def login():
     return render_template('login.html', pi_ip=pi_address)
 
+@app.route('/survilence')
+def survilence():
+    return render_template('survilence.html')
+
 if __name__ == '__main__':
     create_tables()  # Ensure tables are created before checking PI server
     print("Checking PI server...")  # Debug print
-    if check_pi_server():
-    # if True :
+    # if check_pi_server():
+    if True :
         print("Server response OK, starting Flask app.")
         app.run(host='0.0.0.0', port=5001)
     else:
